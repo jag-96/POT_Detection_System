@@ -1,0 +1,38 @@
+<html>
+
+   
+    {% if all_data %}
+    <form action="/webpage/edit_data_delete/" method="GET">
+
+        {% csrf_token %}
+        {% for List_data_point in all_data %}
+        <input type="radio" name="List_data_point" id="List_data_point{{ forloop.counter }}" value="{{ List_data_point.id }}">
+        <label for="List_data_point{{ forloop.counter }}">{{ List_data_point.longitude }}, {{ List_data_point.latitude }}</label><br>
+        {% endfor %}
+     
+        <input type="submit" value="delete">
+    </form>
+
+    {% else %}
+        <p>No potholes are available.</p>
+    {% endif %}
+
+    <form action="/webpage/edit_data_add/" method="POST">
+        {% csrf_token %}
+        <label for="longitude">Longitude: </label>
+        <input id="longitude" type="text" name="longitude">
+        <label for="latitude">Latitude: </label>
+        <input id="latitude" type="text" name="latitude">
+        <label for="priority">Priority: </label>
+        <input id="priority" type="text" name="priority">
+        <input type="submit" value="Add">
+    </form>
+
+    <form action="{% url 'List' %}">
+        <input type="submit" value="map" >
+      </form>
+
+
+</html>
+
+

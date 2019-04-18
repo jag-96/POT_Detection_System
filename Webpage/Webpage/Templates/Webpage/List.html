@@ -1,0 +1,77 @@
+
+
+<html>
+  <head>
+    <style>
+       /* Set the size of the div element that contains the map */
+      #mapsize {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+  </head>
+
+    <div id="list">
+    {% if latest_data_list %}
+    <form action="/delete_entry/" method="POST">
+      
+      <ol>
+        {% for List_data_point in latest_data_list %}
+          <li lat="{{ List_data_point.latitude }}" long="{{ List_data_point.longitude }}">
+            {{ List_data_point.longitude }}, {{ List_data_point.latitude }} 
+          </li>
+        {% endfor %}
+      </ol>
+
+    </form>
+    {% else %}
+      <p>No potholes are available.</p>
+    {% endif %}
+  </div>
+
+
+  <form action="{% url 'edit_data' %}">
+    <input type="submit" value="edit list" >
+  </form>
+  
+
+  <body>
+    
+    <!--The div element for the map -->
+    <div id="mapsize"></div>
+   
+
+   <script> // Initialize and add the map script
+
+
+function initMap() { // function create map
+  
+  var c_stat = {lat: 30.6385, lng: -96.3350 }; // The location of markers
+  //var c_stat2 = {lat: 30.6385, lng: -96.3350 };
+
+  var map = new google.maps.Map(
+      document.getElementById('mapsize'), {zoom: 11, center: c_stat});  // adds map to div element: id= mapsize , zoom x10, centered at c_stat coordinates
+  
+  
+  for(i=0; i<=4; i++){
+  var latitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("lat")); //grabs latitude from list
+  var longitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("long")); //gabs longitude from list
+  
+  var c_marker = {lat: latitude, lng: longitude }; //combines coordinates
+
+  var marker = new google.maps.Marker({position: c_marker, map: map}); // creates marker
+
+  }
+
+}
+    </script>    
+    
+ 
+    
+    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAF1h0JMLSqf9rzHpsAcDnPmuC074OTCm4&callback=initMap"> //Load the API from the specified URL/ run initMap function
+    </script>
+
+  </body>
+</html>

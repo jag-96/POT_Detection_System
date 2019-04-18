@@ -1,0 +1,51 @@
+<form action="/your-name/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+
+
+
+    <!--
+        <form action="{% url 'edit_data_add' List_data_point.id %}" method="POST">
+            <input type="text" value="longitude">
+            <input type="text" value="latitude">
+            <input type="text" value="priority">
+            <input type="submit" value="Add">
+        </form>
+   -->
+
+
+ <!--
+        <select style="height: 200px" name="Data_select" multiple>
+        
+            <option id="{{ List_data_point.id }}" >
+              {{ List_data_point.id }}, {{ List_data_point.longitude }}, {{ List_data_point.latitude }}  
+            </option>
+        {% endfor %}
+        </select>
+        -->
+
+
+
+<div id="list">
+        {% if latest_data_list %}
+        <form action="/your-name/" method="POST">
+          
+          <ol>
+            {% for List_data_point in latest_data_list %}
+              <li lat="{{ List_data_point.latitude }}" long="{{ List_data_point.longitude }}">
+                {{ List_data_point.longitude }}, {{ List_data_point.latitude }} 
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit">
+              </li>
+            {% endfor %}
+          </ol>
+    
+        </form>
+        {% else %}
+          <p>No potholes are available.</p>
+        {% endif %}
+</div>
