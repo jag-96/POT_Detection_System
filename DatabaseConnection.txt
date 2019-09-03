@@ -1,0 +1,13 @@
+hostname = potholedb.c2kpm8yr07cd.us-east-1.rds.amazonaws.com
+port = 3306
+username = admin
+password = iykyk
+
+
+if you are using mysqlclient then use the below code.
+> import MySQLdb as sql 
+> db = sql.connect(host='potholedb.c2kpm8yr07cd.us-east-1.rds.amazonaws.com',port=3306,user='admin',passwd="[iykyk]")
+> #or the below. 
+> db = sql.connect(host='potholedb.c2kpm8yr07cd.us-east-1.rds.amazonaws.com',port=3306,user='admin',passwd="[iykyk],db="potholedb")
+
+MySQLdb | MySQLclient documentation = https://github.com/PyMySQL/mysqlclient-python/blob/master/doc/user_guide.rst
