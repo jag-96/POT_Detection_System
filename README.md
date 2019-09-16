@@ -1,2 +1,6 @@
 # POT_Detection_System
-haha senior design
+Pothole detection system built with GYRO/ACCELO/LiDAR.
+
+George Mikhaeil
+Brennan Fairchild
+Andy Green
