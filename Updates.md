@@ -1,0 +1,14 @@
+week of 9/23
+- Brennan
+  - Changing appearance on the webpage
+  - Worked on how markers are added to webpage
+- Andy
+  - Connected Pi connected to AWS DB from Pi. 
+  - Working on sending data to DB from Pi.
+  - Still messing with GPS, planning on asking Andrew about antennas.
+- George
+  - Realized issues within filtering through small sets of data.
+  - Attempting to existing filter through small sets of data.
+  - Running algorithm on Pi testing time it takes to compute.
+-Group Work
+  - Creating new Prototype for weight testing & data gathering. Hope to have printed by Friday 9/27
