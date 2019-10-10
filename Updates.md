@@ -1,5 +1,20 @@
 # Updates #
 
+
+**week of 10/7**
+- Group Work
+  - Continued to get LiDAR & Gyro Data
+  - Went to a location with known potholes (may have been too many)
+  - Went to a location with a Speed-Bump & tested.
+  - Next steps is configuring GPS with sensor array & testing
+- Andy
+  - Continued testing of GPS with sensor array
+  - Next Steps: Looking back into Accelerometer data as well as the GYRO data.
+  - Next Steps: Connect Pi to MYSQL server and send data to the proper DB.
+- George
+  - Continued test of new filters for LiDAR.
+  - Encountered issues with LiDAR data & GyroZ, hoping to solve by 10/16
+
 **day of 10/2**
 - Group work
   - We've successfully connected the sensor array & LiDAR onto the casing and zip-tied the casing onto the vehicle. 
