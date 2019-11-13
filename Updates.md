@@ -1,5 +1,12 @@
 # Updates #
 
+**week of 11/11**
+- Group Work
+  - LiDAR, GPS, & GYRO all run concurrently through a multithreaded process.
+  - LiDAR runs at 5Hz, GPS runs at 1 Hz, GYRO runs at 500 Hz. This will be our final frequency implementations.
+  - The SOFT Detection Algorithm has been multithreaded into our main system, however we encountered slight errors. If this does not resolve by 11/15, we will run the detection algorithm all together after a full day of driving data, or we will send all the data to the database and do the algorithm on the webpage. Both of these implementations are possible and availabale.
+  - All data can be sent to the MySQL server on WiFi, with no issues.
+  - SOFT Detection algorithm has been tested and works well on & off the Pi, HARD detection (filters included) may be added into the webpage if it comes to that.
 
 **week of 10/7**
 - Group Work
