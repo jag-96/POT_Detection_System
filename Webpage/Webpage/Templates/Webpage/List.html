@@ -2,199 +2,135 @@
 
 <html>
   <head>
+     <!-- Required meta tags -->
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ 
+     <!--making the webpage pretty-->
     <style>
         /* Set the size of the div element that contains the map */
-       #mapsize {
-         height: 490px;  /* The height is 400 pixels */
-         width: 70%;  /* The width is the width of the web page */
-         float: right;
-        }
-       #head{         
-         height: 250px;
-         border-color: blue;
-         border: 1px;
+      #mapsize {
+        height: 470px;  /* The height is 400 pixels */
+        width: 80%;  /* The width is the width of the web page */
+        float: right;
+      }
+      .background{
+        background-color: black;
+      }
+      #head{         
+        height: 250px;
+        border-color: blue;
+        border: 1px;
+      }
+      #list{
+        background:linear-gradient(to bottom, rgb(20, 20, 20) 5%, rgb(65, 65, 65) 100%);
+        background-color:black;
+        border-radius:3px;
+        border:1px solid #0b0e07;
+        display:inline-block;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:15px;
+        padding:9px 23px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #263666;
+        height: 430px;
+        overflow-y: auto;  
+      }
+
+      .delete-button{
+        box-shadow:inset 0px -3px 7px 0px #29bbff;
+        background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+        background-color:#2dabf9;
+        border-radius:3px;
+        border:1px solid #0b0e07;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:15px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #263666;
+        
        }
-       #list{
-         background-color: blue;
-         color: white;
-         width:30%;
-         padding: 0.5px;
-         height: 52%;
-       }
-       #ordList{
-         padding: 5px;
-       }
-       #delete-button{
-          float:right;
-       }
+      .delete-button:hover {
+        background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+        background-color:#0688fa;
+      }
+      .delete-button:active {
+        position:relative;
+        top:1px;
+      }
+      .add-button {
+        box-shadow:inset 0px -3px 7px 0px #29bbff;
+        background:linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+        background-color:#2dabf9;
+        border-radius:3px;
+        border:1px solid #0b0e07;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:15px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #263666;
+      }
+      .add-button:hover {
+        background:linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+        background-color:#0688fa;
+      }
+      .add-button:active {
+        position:relative;
+        top:1px;
+      }
        
      </style>
   </head>
+
    
      
 
   <body>
-    <div id="head">
-      <img src="{% static 'images/potdetectionlogo.jpg' %}" alt="Product Logo" style="height:300px;">
+    <!--division for header-->
+    <div class="container-fluid" >
+      <img src="{% static 'images/potdetectionlogo.png' %}" alt="Product Logo" style="height:200px;">
     </div>
-    
 
-     
-
-    <!--The div element for the map -->
-    <div id="mapsize"></div>
    
-
-   <script> // Initialize and add the map script
-
-
-function initMap() { // function create map
-  
-  var c_stat = {lat: 30.6385, lng: -96.3350 }; // The location of markers
-  //var c_stat2 = {lat: 30.6385, lng: -96.3350 };
-
-  var map = new google.maps.Map(
-      document.getElementById('mapsize'), {zoom: 11, center: c_stat});  // adds map to div element: id= mapsize , zoom x10, centered at c_stat coordinates
-  
-  
-  for(i=0; i<=document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI").length; i++){
-      var new_cord;
-      var latitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("lat")); //grabs latitude from list
-      var longitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("long")); //gabs longitude from list
-      var id = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("id")); //gabs id from list
-    
-      var c_marker = {lat: latitude, lng: longitude }; //combines coordinates
+   <div class="container-fluid">
+    <!--The div element for the map -->
+    <div class="col" id="mapsize"></div>
      
-
-
-      var marker = new google.maps.Marker({position: c_marker, map: map, draggable: true, store_id: id}); // creates marker
-    
-
-      google.maps.event.addListener(marker, "click", function () {
-
-        var new_lng= this.getPosition().lng();
-        var new_lat= this.getPosition().lat();
-        
-        var infocontent =  '{% csrf_token %}'+
-      '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">'+ new_lng.toFixed(5) + ', ' + new_lat.toFixed(5) + '</h1>'+
-      '<div id="bodyContent">'+
-      '<p><form action="/edit_data_delete/" method="GET">' +     
-      '<input type="submit" value="delete"><br>'+
-      '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +
-      '</form>' +
-      '<form action="/edit_data_update/" method="GET">' +     
-      '<input type="submit" value="update"><br>'+
-      '<input type="hidden" name="List_data_point_long" value="'+ new_lng +'">' +
-      '<input type="hidden" name="List_data_point_lat" value="'+ new_lat +'">' +
-      '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +         
-      '</form>' +
-      '</p>'+
-      '</div>'+
-      '</div>';
-        
-        infowindow = new google.maps.InfoWindow({content:infocontent}); 
-        infowindow.open(map, this);
-      });
-
-    google.maps.event.addListener(marker, "dragstart", function() {   
-      infowindow.close();
-      });
-
-    google.maps.event.addListener(marker, "dragend", function() { 
-
-      var new_lng= this.getPosition().lng();
-      var new_lat= this.getPosition().lat();
-        
-      var infocontent =  '{% csrf_token %}'+
-      '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">'+ new_lng.toFixed(5) + ', ' + new_lat.toFixed(5) + '</h1>'+
-      '<div id="bodyContent">'+
-      '<p><form action="/edit_data_delete/" method="GET">' +     
-      '<input type="submit" value="delete"><br>'+
-      '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +
-      '</form>' +
-      '<form action="/edit_data_update/" method="GET">' +     
-      '<input type="submit" value="update"><br>'+
-      '<input type="hidden" name="List_data_point_long" value="'+ new_lng +'">' +
-      '<input type="hidden" name="List_data_point_lat" value="'+ new_lat +'">' +
-      '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +         
-      '</form>' +
-      '</p>'+
-      '</div>'+
-      '</div>';
-
-      infowindow = new google.maps.InfoWindow({content: infocontent}); 
-      infowindow.open(map, this);
-      }); 
-    
-    }
-    
-  }
-
-
-     
-
-
-    </script>    
-    
-
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAF1h0JMLSqf9rzHpsAcDnPmuC074OTCm4&callback=initMap"> //Load the API from the specified URL/ run initMap function
-    </script>
-
-    <div id="editdata">
-    
+    <!--The div element for the listed Potholes and add marker-->
+    <div class="col" >
+      <div class="row">
         <br>
+        <!--form adds marker at the center of College Station-->
         <form action="/edit_data_add/" method="POST">
             {% csrf_token %}
-           <!-- <label for="longitude">Longitude: </label>
-            <input id="longitude" type="float" name="longitude" required pattern="-?\d{1,3}\.?\d*" max="180" min="-180" value="-180 to 180"><br>
-            <label for="latitude">Latitude: </label>
-            <input id="latitude" type="float" name="latitude" required pattern="-?\d{1,3}\.?\d*" max="90" min="-90" value="-90 to 90"><br>
-            <label for="priority">Priority: </label>
-            <input id="priority" type="number" name="priority" required value=><br>-->
-
             <input id="longitude" type="hidden" name="longitude" value="-96.3350">
             <input id="latitude" type="hidden" name="latitude" value="30.6385">
             <input id="priority" type="hidden" name="priority" value="9">
-            <input type="submit" value="Click to Add New Pothole Marker">
+            <input type="submit" value="Click to Add New Pothole Marker" class="add-button"> 
         </form>
-        <!--<script>
-        const inputs = document.querySelectorAll("input, select, textarea");
-
-        inputs.forEach(input => {
-         input.addEventListener(
-            "invalid",
-            event => {
-            input.classList.add("error");
-            },
-            false
-          );
-        });
-        </script>-->
+      </div>
       </div>
 
       <div id="list">
-
+        
           {% if latest_data_list %}
             
             <ol>
               {% for List_data_point in latest_data_list %}
               <form action="edit_data_delete/" method="GET">
-                <div id="ordList">
                 <li lat="{{ List_data_point.latitude }}" long="{{ List_data_point.longitude }}" id="{{ List_data_point.id }}">
                   {{ List_data_point.longitude }}, {{ List_data_point.latitude }}
                 </li>
-                <div id="delete_button">
                 <input type="hidden" name="List_data_point" value="{{ List_data_point.id }}">
-                <input type="submit" value="delete" align="right">
-                </div>
-              </div>
+                <input type="submit" value="delete" class="delete-button">
             </form>
               {% endfor %}
             </ol>
@@ -203,7 +139,121 @@ function initMap() { // function create map
           {% else %}
             <p>No potholes are available.</p>
           {% endif %}
-        </div>    
+        
+        </div>
+      </div>
+        
+         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
    
   </body>
+ 
+ 
+ <script> // Initialize and add the map script
+
+
+    function initMap() { // function create map
+      
+      var c_stat = {lat: 30.6385, lng: -96.3350 }; // The location of College Station
+    
+      var map = new google.maps.Map(
+          document.getElementById('mapsize'), {zoom: 11, center: c_stat});  // adds map to div element: id= mapsize , zoom x10, centered at c_stat coordinates
+      
+      
+      for(i=0; i<=document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI").length; i++){ //grabs marker locations from list of data points sent to Webpage
+          var new_cord;
+          var latitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("lat")); //grabs latitude from list
+          var longitude = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("long")); //gabs longitude from list
+          var id = parseFloat(document.getElementById("list").getElementsByTagName("OL")[0].getElementsByTagName("LI")[i].getAttribute("id")); //gabs id from list
+        
+          var c_marker = {lat: latitude, lng: longitude }; //combines coordinates
+         
+    
+    
+          var marker = new google.maps.Marker({position: c_marker, map: map, draggable: true, store_id: id,}); // creates marker
+        
+    
+          google.maps.event.addListener(marker, "click", function () {// initializes/creates info window on click of marker
+    
+            var new_lng= this.getPosition().lng();
+            var new_lat= this.getPosition().lat();
+            
+            // html code to go in info window
+            var infocontent =  '{% csrf_token %}'+
+          '<div id="content">'+
+          '<h1 id="firstHeading" class="firstHeading">'+ new_lng.toFixed(5) + ', ' + new_lat.toFixed(5) + '</h1>'+
+          '<div id="bodyContent">'+
+          '<p><form action="/edit_data_delete/" method="GET">' +   //form for deleting marker  
+          '<input type="submit" value="delete" class="delete-button"><br>'+
+          '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +
+          '</form>' +
+          '<form action="/edit_data_update/" method="GET">' +     //form for updating marker
+          '<input type="submit" value="update" class="delete-button"><br>'+
+          '<input type="hidden" name="List_data_point_long" value="'+ new_lng +'">' +
+          '<input type="hidden" name="List_data_point_lat" value="'+ new_lat +'">' +
+          '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +         
+          '</form>' +
+          '</p>'+
+          '</div>'+
+          '</div>';
+            
+            infowindow = new google.maps.InfoWindow({content:infocontent}); 
+            infowindow.open(map, this);
+          });
+    
+        google.maps.event.addListener(marker, "dragstart", function() {   // allows marker to be dragged to new locations
+          infowindow.close();
+          });
+    
+        google.maps.event.addListener(marker, "dragend", function() { // creates new info window at the new location of marker
+    
+          var new_lng= this.getPosition().lng();
+          var new_lat= this.getPosition().lat();
+            
+          //
+          var infocontent =  '{% csrf_token %}'+
+          '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h1 id="firstHeading" class="firstHeading">'+ new_lng.toFixed(5) + ', ' + new_lat.toFixed(5) + '</h1>'+
+          '<div id="bodyContent">'+
+          '<p><form action="/edit_data_delete/" method="GET">' +     
+          '<input type="submit" value="delete" class="delete-button"><br>'+
+          '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +
+          '</form>' +
+          '<form action="/edit_data_update/" method="GET">' +     
+          '<input type="submit" value="update" class="delete-button"><br>'+
+          '<input type="hidden" name="List_data_point_long" value="'+ new_lng +'">' +
+          '<input type="hidden" name="List_data_point_lat" value="'+ new_lat +'">' +
+          '<input type="hidden" name="List_data_point" value="'+ this.store_id +'">' +         
+          '</form>' +
+          '</p>'+
+          '</div>'+
+          '</div>';
+    
+          infowindow = new google.maps.InfoWindow({content: infocontent}); 
+          infowindow.open(map, this);
+          }); 
+        
+        }
+        
+      }
+    
+    
+         
+    
+    
+        </script>    
+        
+    
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAF1h0JMLSqf9rzHpsAcDnPmuC074OTCm4&callback=initMap"> //Load the API from the specified URL/ run initMap function
+        </script>
+    
+
+
+
+
 </html>
